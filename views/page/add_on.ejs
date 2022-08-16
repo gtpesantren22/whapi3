@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-secondary" role="alert">
+            <%= lingua.add_on_page.desc_addon %>
+        </div>
+        <div class="card user-card mb-3">
+            <div class="card-body">
+                <div id="status"></div>
+                <h5><i class="fad fa-plus-circle"></i> Add On</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td><%= lingua.add_on_page.column_no %></td>
+                            <td><%= lingua.add_on_page.column_addon %></td>
+                            <td><%= lingua.add_on_page.column_type %></td>
+                            <td><%= lingua.add_on_page.column_status %></td>
+                        </tr>
+                        <tr>
+                            <td>1.</td>
+                            <td><%= lingua.add_on_page.row_addon %></td>
+                            <td><%= lingua.add_on_page.row_type %></td>
+                            <td><i class="fas fa-toggle-on" style="color:green"></i> <%= lingua.add_on_page.row_active %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

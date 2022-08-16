@@ -1,0 +1,48 @@
+<table class="table table-bordered">
+    <tbody>
+      <tr>
+        <td>Engine</td>
+        <td>:</td>
+        <td><%= (oldVersion == 'pedroslopez/whatsapp-web.js#multidevice' ? '-' : oldVersion) %></td>
+      </tr>
+      <tr>
+        <%
+            if(needUpdate){
+                text = lingua.dashboard_page.desc_need_ver;
+                bg = 'success';
+            }
+            else if(oldVersion == 'pedroslopez/whatsapp-web.js#multidevice'){
+                text = '-';
+                bg = 'warning';
+            }
+            else{
+                text = lingua.dashboard_page.desc_need_ver2 + ' <b>'+latestVersion+'</b>';
+                bg = 'danger';
+            }
+        %>
+        <td colspan="3" class="table-<%= bg %>">
+            <%- text %>
+        </td>
+      </tr>
+      <tr>
+        <td>WHAPI</td>
+        <td>:</td>
+        <td><%= oldVersionWhapi %></td>
+      </tr>
+      <tr>
+        <%
+            if(needUpdateWhapi){
+                text = lingua.dashboard_page.desc_need_ver;
+                bg = 'success';
+            }
+            else{
+                text = lingua.dashboard_page.desc_need_ver2 + ' <b>'+latestVersionWhapi+'</b>';
+                bg = 'danger';
+            }
+        %>
+        <td colspan="3" class="table-<%= bg %>">
+            <%- text %>
+        </td>
+    </tr>
+    </tbody>
+  </table>

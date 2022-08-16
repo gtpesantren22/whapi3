@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card user-card mb-3">
+            <div class="card-body">
+                <div id="status"></div>
+                <h5><i class="fad fa-plus-circle"></i> <%= lingua.device_page.desc_add_device %></h5>
+                <form id="add-device" method="post">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label><%= lingua.device_page.desc_name_device %></label>
+                        <input class="form-control" type="text" id="name" name="name">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label><%= lingua.device_page.desc_api_key %></label>
+                        <input class="form-control" type="text" id="apiKey" name="apiKey">
+                        <p class="text-muted"><%= lingua.device_page.desc_api_key2 %></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-primary" type="submit"><%= lingua.device_page.button_device %></button>
+                    <a href="https://whapi.id/payment_page.html?addon=true" class="btn btn-info"><%= lingua.device_page.button_limit %></a>
+                  </div>
+                  <%= lingua.device_page.desc_limit %> : <b><%= count_device %></b>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" id="load_device"></div>
+
+<script>
+
+    loadDevice()
+
+    $('#add-device').validate({
+      rules: {
+        name: {
+          required: true
+        }
+      },
+      messages: {
+        name: {
+          required: '<%= lingua.device_page.validate_name %>'
+        }
+      },
+      submitHandler: function(form) {
+        $.ajax({
+            type: 'POST',
+            url: '../user/addDevice',
+            data: $('#add-device').serialize(),
+            success: function(e) {
+              loadDevice()
+              $('#name').val('');
+              $('#apiKey').val('');
+              loadToast(e.clr, e.message)
+            },
+            error: function(xhr, status, error) {
+              loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+            }
+        });
+      }
+    });
+
+    function loadDevice(){
+      $.get('../user/listDevice', (e) => {
+        $('#load_device').html(e)
+      }).fail(function() {
+        loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+      })
+    }
+  
+  </script>

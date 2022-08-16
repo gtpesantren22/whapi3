@@ -1,0 +1,87 @@
+<%
+    if(device.length > 0){
+        
+        on = '<i class="fas fa-toggle-on" style="color:green"></i>';
+        off = '<i class="fas fa-toggle-off" style="color:red"></i>';
+        for(var i=0; i < device.length; i++){
+            if (device[i].stateStatus == 'CONNECTED') {
+                statusLabel = 'badge badge-success';
+             } else if (device[i].stateStatus == 'CONFLICT' || device[i].stateStatus == 'DEPRECATED_VERSION' || device[i].stateStatus == 'PROXYBLOCK' || device[i].stateStatus == 'SMB_TOS_BLOCK' || device[i].stateStatus == 'TOS_BLOCK' || device[i].stateStatus == 'UNLAUNCHED') {
+                statusLabel = 'badge badge-warning';
+             } else if (device[i].stateStatus == 'OPENING' || device[i].stateStatus == 'PAIRING') {
+                statusLabel = 'badge badge-info';
+             } else if (device[i].stateStatus == 'TIMEOUT' || device[i].stateStatus == 'UNPAIRED' || device[i].stateStatus == 'UNPAIRED_IDLE') {
+                statusLabel = 'badge badge-danger';
+             } else if (device[i].stateStatus == 'SERVICE_OFF') {
+                statusLabel = 'badge badge-secondary';
+             } else if (device[i].stateStatus == 'SERVICE_SCAN') {
+                 statusLabel = 'badge badge-secondary';
+             } else if (device[i].stateStatus == null){
+                statusLabel = 'badge badge-secondary';
+             }
+%>
+    <div class="col-md-4 col-sm-12">
+        <div class="card user-card mb-3">
+            <h5 class="card-header"><%= device[i].nameDevice %></h5>
+            <div class="card-body">
+                 <table class="table table-bordered">
+                    <tr>
+                        <td colspan="2">Status : <span class="<%= statusLabel %>" id="state"><%= device[i].stateStatus %></span></td>
+                    </tr>
+                     <tr>
+                         <td><%- (device[i].settings.webhook_status) ? on : off; %> Webhook</td>
+                         <td><%- (device[i].settings.webhookmedia_status) ? on : off; %> Webhook Media</td>
+                     </tr>
+                     <tr>
+                        <td><%- (device[i].settings.autoreply_status) ? on : off; %> Auto Reply</td>
+                        <td><%- (device[i].settings.restoresession_status) ? on : off; %> Auto Restore</td>
+                    </tr>
+                    <tr>
+                        <td><%- (device[i].settings.headless_status) ? on : off; %> Headless</td>
+                        <td><%- (device[i].settings.multidevice_status) ? on : off; %> Multidevice</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><%- (device[i].settings.downtimenotif_status) ? on : off; %> Downtime Notification</td>
+                    </tr>
+                 </table>
+                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
+                    <a href="../user/manageDevice?id=<%= device[i]._id %>" class="btn btn-success"><i class="fas fa-cogs"></i> <%= lingua.device_page.button_manage %></a>
+                    <a href="#" onclick="deleteConfirm('<%= device[i]._id %>')" class="btn btn-danger"><i class="fas fa-trash"></i> <%= lingua.device_page.button_delete %></a>
+                 </div>
+            </div>
+        </div>
+    </div>
+<%
+    }
+%>
+<% } else { %>
+    <div class="col-12">
+        <div class="card user-card">
+            <div class="card-body">
+                <%= lingua.device_page.device_404 %>
+            </div>
+        </div>
+    </div>
+<%
+}
+%>
+
+<script>
+    deleteConfirm = function(id){
+        var r = confirm("<%= lingua.device_page.confirm_delete %>");
+        if (r == true) {
+            $.ajax({
+                url: '../user/deleteDevice',
+                type: 'post',
+                data: "_id=" + id,
+                success: function(e) {
+                    loadDevice()
+                    loadToast('info', e.message)
+                },
+                error: function(xhr, status, error) {
+                    loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+                }
+            });
+        }
+    }
+</script>
