@@ -16,39 +16,21 @@
                     if (device.stateStatus == 'CONNECTED') {
                         statusLabel = 'badge badge-success';
                         bt_1 = 'disabled';
-                        bt_2 = '';
-                        bt_3 = '';
                         bt_4 = '';
-                    } else if (device.stateStatus == 'CONFLICT' || device.stateStatus == 'DEPRECATED_VERSION' || device.stateStatus == 'PROXYBLOCK' || device.stateStatus == 'SMB_TOS_BLOCK' || device.stateStatus == 'TOS_BLOCK' || device.stateStatus == 'UNLAUNCHED') {
-                        statusLabel = 'badge badge-warning';
-                        bt_1 = 'disabled';
-                        bt_2 = 'disabled';
-                        bt_3 = '';
-                        bt_4 = '';
-                    } else if (device.stateStatus == 'OPENING' || device.stateStatus == 'PAIRING') {
-                        statusLabel = 'badge badge-info';
-                        bt_1 = 'disabled';
-                        bt_2 = 'disabled';
-                        bt_3 = '';
-                        bt_4 = '';
-                    } else if (device.stateStatus == 'TIMEOUT' || device.stateStatus == 'UNPAIRED' || device.stateStatus == 'UNPAIRED_IDLE') {
-                        statusLabel = 'badge badge-danger';
-                        bt_1 = 'disabled';
-                        bt_2 = 'disabled';
-                        bt_3 = '';
-                        bt_4 = '';
+                        bt_filter = '';
+                        bt_delete_sess = 'disabled';
                     } else if (device.stateStatus == 'SERVICE_OFF') {
                         statusLabel = 'badge badge-secondary';
                         bt_1 = '';
-                        bt_2 = 'disabled';
-                        bt_3 = 'disabled';
                         bt_4 = 'disabled';
+                        bt_filter = 'disabled';
+                        bt_delete_sess = '';
                     } else if (device.stateStatus == 'SERVICE_SCAN') {
                         statusLabel = 'badge badge-secondary';
                         bt_1 = 'disabled';
-                        bt_2 = 'disabled';
-                        bt_3 = '';
                         bt_4 = '';
+                        bt_filter = 'disabled';
+                        bt_delete_sess = 'disabled';
                     } 
                     else if (device.stateStatus == null){
                         statusLabel = 'badge badge-secondary';
@@ -57,8 +39,6 @@
                 <span class="<%= statusLabel %>" id="state"><%= device.stateStatus %></span></span>
                 </h4>
                 <button type="button" data-service="serviceStart" class="btn btn-success btn-block state" <%= bt_1 %>><%= lingua.manage_device_page.button_1 %></button>
-                <button type="button" data-service="serviceReset" class="btn btn-info btn-block state" <%= bt_2 %>><%= lingua.manage_device_page.button_2 %></button>
-                <button type="button" data-service="screenshotDevice" class="btn btn-warning btn-block state" <%= bt_3 %>><%= lingua.manage_device_page.button_3 %></button>
                 <button type="button" data-service="serviceDestroy" class="btn btn-danger btn-block state" <%= bt_4 %>><%= lingua.manage_device_page.button_4 %></button>
             </div>
         </div>
@@ -95,6 +75,9 @@
                     <li class="nav-item">
                       <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-telegram" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fad fa-bell"></i> <%= lingua.manage_device_page.tab_notification %></a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-grup" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fad fa-users"></i> <%= lingua.manage_device_page.tab_group %></a>
+                    </li>
                   </ul>
                   <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-api" role="tabpanel">
@@ -113,17 +96,11 @@
                             <input type="hidden" name="_id" value="<%= device._id %>">  
                             <input type="hidden" name="apiKey" id="new-apikey3" value="<%= device.apiKey %>">  
                             <button type="submit" class="btn btn-info"><%= lingua.manage_device_page.desc_change_apikey %></button>
+                            <button type="button" id="delete_sess" class="btn btn-danger" <%= bt_delete_sess %> onclick="deleteSessionDevice()"><%= lingua.manage_device_page.desc_delete_session %></button>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="pills-fitur" role="tabpanel">
                         <div class="form-group">
-                            <div class="alert alert-secondary" role="alert">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.multidevice_status) ? 'checked' : ''; %> data-feature="multidevice_status" id="multidevice_status">
-                                    <label class="custom-control-label" for="multidevice_status"><b>Multi-device</b></label>
-                                </div>
-                                <%= lingua.manage_device_page.desc_feature_1 %>
-                            </div>
                             <div class="alert alert-secondary" role="alert">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.autoreply_status) ? 'checked' : ''; %> data-feature="autoreply_status" id="autoreply_status">
@@ -147,13 +124,6 @@
                             </div>
                             <div class="alert alert-secondary" role="alert">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.headless_status) ? 'checked' : ''; %> data-feature="headless_status" id="headless_status">
-                                    <label class="custom-control-label" for="headless_status"><b>Headless</b></label>
-                                </div>
-                                <%= lingua.manage_device_page.desc_feature_5 %>
-                            </div>
-                            <div class="alert alert-secondary" role="alert">
-                                <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.restoresession_status) ? 'checked' : ''; %> data-feature="restoresession_status" id="restoresession_status">
                                     <label class="custom-control-label" for="restoresession_status"><b>Restore Session</b></label>
                                 </div>
@@ -165,6 +135,13 @@
                                     <label class="custom-control-label" for="downtimenotif_status"><b>Downtime Notifikasi Telegram</b></label>
                                 </div>
                                 <%= lingua.manage_device_page.desc_feature_7 %>
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.autostartdevice_status) ? 'checked' : ''; %> data-feature="autostartdevice_status" id="autostartdevice_status">
+                                    <label class="custom-control-label" for="autostartdevice_status"><b>Auto Start Device</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_8 %>
                             </div>
                         </div>
                         </div>
@@ -250,28 +227,26 @@
                             <button type="submit" class="btn btn-info"><%= lingua.manage_device_page.button_save %></button>
                        </form>
                     </div>
+                    <div class="tab-pane fade" id="pills-grup" role="tabpanel">
+                        <div class="alert alert-secondary" role="alert">
+                            <%= lingua.manage_device_page.desc_filter_group %>
+                        </div>
+                        <button type="button" data-service="getListGroup" class="mb-3 btn btn-success btn-block state" <%= bt_filter %>><%= lingua.manage_device_page.button_filter_group %></button>
+                        <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th><%= lingua.manage_device_page.label_id_group %></th>
+                                    <th><%= lingua.manage_device_page.label_name_group %></th>
+                                </tr>
+                            </thead>
+                            <tbody id="load_list_group"></tbody>
+                        </table>
+                    </div>
                   </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="screenshotModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">WHAPI Live Screenshot</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <img src="" id="loadScreenshot" class="img-fluid">
-        </div>
-      </div>
-    </div>
-  </div>
 
 <script>
 
@@ -399,11 +374,11 @@
         });
     });
 
-    function disabledButton(s_start, s_reset, s_screenshot, s_destroy){
+    function disabledButton(s_start, s_filter_group, s_destroy, s_del_sess){
         $("button[data-service='serviceStart']").prop("disabled", s_start);
-        $("button[data-service='serviceReset']").prop("disabled", s_reset);
-        $("button[data-service='screenshotDevice']").prop("disabled", s_screenshot);
+        $("button[data-service='getListGroup']").prop("disabled", s_filter_group);
         $("button[data-service='serviceDestroy']").prop("disabled", s_destroy);
+        $("#delete_sess").prop("disabled", s_del_sess);
     }
 
     function btnWebhook(params){
@@ -426,6 +401,23 @@
         });
     }
 
+    function deleteSessionDevice(){
+        var r = confirm("<%= lingua.manage_device_page.desc_delete_confirm_session %>");
+        if (r == true) {
+            $.ajax({
+                url: '../user/deleteSessionDevice',
+                type: 'post',
+                data: "apiKey=" + constApiKey,
+                success: function(e) {
+                    loadToast(e.clr, e.message)
+                },
+                error: function(xhr, status, error) {
+                    loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+                }
+            });
+        }
+    }
+
     $(".state").click(function() {
         let data_service = $(this).attr('data-service')
         $.ajax({
@@ -435,13 +427,15 @@
                 apiKey: constApiKey
             },
             success: function(e) {
-                if (data_service == 'screenshotDevice') {
+                if (data_service == 'getListGroup') {
                     if (e.code == 200) {
-                        $("img#loadScreenshot").attr("src", e.results.screenshot).show();
-                        $('#screenshotModal').modal('show');
+                        table.clear().draw();
+                        e.results.forEach( data => {
+                            table.row.add([data.id, data.subject]).draw(false)
+                        })
                     }
                     else{
-                        loadToast('danger', " <br/><br/>" + e.results.screenshot.message)
+                        loadToast('danger', e.results.message)
                     }
                 }
                 else{
@@ -469,27 +463,19 @@
             if (state == 'CONNECTED') {
                 $("#state").removeClass();
                 $("#state").addClass('badge badge-success');
-                disabledButton(true, false, false, false);
-            } else if (state == 'CONFLICT' || state == 'DEPRECATED_VERSION' || state == 'PROXYBLOCK' || state == 'SMB_TOS_BLOCK' || state == 'TOS_BLOCK' || state == 'UNLAUNCHED') {
-                $("#state").removeClass();
-                $("#state").addClass('badge badge-warning');
-                disabledButton(true, true, false, false);
-            } else if (state == 'OPENING' || state == 'PAIRING') {
+                disabledButton(true, false, false, true);
+            } else if (state == 'PAIRING') {
                 $("#state").removeClass();
                 $("#state").addClass('badge badge-info');
-                disabledButton(true, true, false, false);
-            } else if (state == 'TIMEOUT' || state == 'UNPAIRED' || state == 'UNPAIRED_IDLE') {
-                $("#state").removeClass();
-                $("#state").addClass('badge badge-danger');
-                disabledButton(true, true, false, false);
+                disabledButton(true, true, false, true);
             } else if (state == 'SERVICE_OFF') {
                 $("#state").removeClass();
                 $("#state").addClass('badge badge-secondary');
-            disabledButton(false, true, true, true);
+                disabledButton(false, true, true, false);
             } else if(state == 'SERVICE_SCAN'){
                 $("#state").removeClass();
                 $("#state").addClass('badge badge-secondary');
-                disabledButton(true, true, false, false);
+                disabledButton(true, true, false, true);
             }
             if (state == 'SERVICE_OFF' || 'CONNECTED'){
                 $("img#qrCode").attr("src", '../img/loading.gif');
@@ -506,6 +492,10 @@
 
     $(function() {
         init(constApiKey)
+        table = $('#example').DataTable({
+            "aLengthMenu": [[10, 15, 20, 25, 30], [10, 15, 20, 25, 30]],
+            "iDisplayLength": 10,
+        });
     })
 
 </script>

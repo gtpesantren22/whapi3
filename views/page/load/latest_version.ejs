@@ -3,17 +3,13 @@
       <tr>
         <td>Engine</td>
         <td>:</td>
-        <td><%= (oldVersion == 'pedroslopez/whatsapp-web.js#multidevice' ? '-' : oldVersion) %></td>
+        <td><%= oldVersion %></td>
       </tr>
       <tr>
         <%
             if(needUpdate){
                 text = lingua.dashboard_page.desc_need_ver;
                 bg = 'success';
-            }
-            else if(oldVersion == 'pedroslopez/whatsapp-web.js#multidevice'){
-                text = '-';
-                bg = 'warning';
             }
             else{
                 text = lingua.dashboard_page.desc_need_ver2 + ' <b>'+latestVersion+'</b>';
@@ -46,3 +42,10 @@
     </tr>
     </tbody>
   </table>
+  <%
+  if(!needUpdateWhapi || !needUpdate){
+  %>
+  <a href="../do-update" class="btn btn-primary"><%- lingua.dashboard_page.btn_update_app %></a>
+  <%
+  }
+  %>
