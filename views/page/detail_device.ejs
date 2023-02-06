@@ -1,0 +1,497 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card user-card mb-3">
+            <div class="card-body"><%= lingua.manage_device_page.desc_manage_device %> <b><%= device.nameDevice %></b></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card user-card mb-3">
+            <div class="card-body">
+            <h5 class="card-title"><i class="fad fa-qrcode"></i> QRCode Whatsapp Web</h5>
+                <div class="form-group text-center">
+                <img id="qrCode" src="../img/loading.gif" class="img-fluid" alt="#">
+                </div>
+                <h4>Status
+                <%
+                    if (device.stateStatus == 'CONNECTED') {
+                        statusLabel = 'badge badge-success';
+                        bt_1 = 'disabled';
+                        bt_4 = '';
+                        bt_filter = '';
+                    } else if (device.stateStatus == 'SERVICE_OFF') {
+                        statusLabel = 'badge badge-secondary';
+                        bt_1 = '';
+                        bt_4 = 'disabled';
+                        bt_filter = 'disabled';
+                    } else if (device.stateStatus == 'SERVICE_SCAN') {
+                        statusLabel = 'badge badge-secondary';
+                        bt_1 = 'disabled';
+                        bt_4 = '';
+                        bt_filter = 'disabled';
+                    } 
+                    else if (device.stateStatus == null){
+                        statusLabel = 'badge badge-secondary';
+                    }
+                %>
+                <span class="<%= statusLabel %>" id="state"><%= device.stateStatus %></span></span>
+                </h4>
+                <button type="button" data-service="serviceStart" class="btn btn-success btn-block state" <%= bt_1 %>><%= lingua.manage_device_page.button_1 %></button>
+                <button type="button" data-service="serviceDestroy" class="btn btn-danger btn-block state" <%= bt_4 %>><%= lingua.manage_device_page.button_4 %></button>
+            </div>
+        </div>
+        <div class="card user-card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fad fa-envelope"></i> <%= lingua.manage_device_page.desc_send_message %></h5>
+                <form id="send-message">
+                    <input type="hidden" name="apiKey" id="new-apikey2" value="<%= device.apiKey %>">
+                    <div class="form-group">
+                       <input type="text" name="phone" class="form-control" autocomplete="off" placeholder="<%= lingua.manage_device_page.desc_phone_number %>">
+                    </div>
+                    <div class="form-group">
+                       <textarea class="form-control" name="message" placeholder="<%= lingua.manage_device_page.desc_message %>"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block"><%= lingua.manage_device_page.button_send %></button>
+                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card user-card">
+            <div class="card-body">
+                <div id="status"></div>
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-api" role="tab" aria-controls="pills-api" aria-selected="true"><i class="fad fa-fire"></i> API</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-fitur" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fad fa-star"></i> <%= lingua.manage_device_page.tab_feature %></a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-webhook" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fad fa-brackets-curly"></i> Webhook</a>
+                      </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-telegram" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fad fa-bell"></i> <%= lingua.manage_device_page.tab_notification %></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-grup" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fad fa-users"></i> <%= lingua.manage_device_page.tab_group %></a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-api" role="tabpanel">
+                        <div class="alert alert-secondary" role="alert">
+                            <%- lingua.manage_device_page.desc_test_ping %>
+                        </div>
+                        <h5>URL API</h5>
+                        <div class="alert alert-info" role="alert">
+                            <b><span><%= urlApi %></span></b>
+                        </div>
+                        <h5>API Key</h5>
+                        <div class="alert alert-info" role="alert">
+                            <b><span id="new-apikey"><%= device.apiKey %></span></b>
+                        </div>
+                        <form id="change-apikey">
+                            <input type="hidden" name="_id" value="<%= device._id %>">  
+                            <input type="hidden" name="apiKey" id="new-apikey3" value="<%= device.apiKey %>">  
+                            <button type="submit" class="btn btn-info"><%= lingua.manage_device_page.desc_change_apikey %></button>
+                            <button type="button" id="delete_sess" class="btn btn-danger" onclick="deleteSessionDevice()"><%= lingua.manage_device_page.desc_delete_session %></button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="pills-fitur" role="tabpanel">
+                        <div class="form-group">
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.autoreply_status) ? 'checked' : ''; %> data-feature="autoreply_status" id="autoreply_status">
+                                    <label class="custom-control-label" for="autoreply_status"><b>Auto Reply</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_2 %>
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.webhook_status) ? 'checked' : ''; %> data-feature="webhook_status" id="webhook_status" id="webhook_status">
+                                    <label class="custom-control-label" for="webhook_status"><b>Webhook</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_3 %>
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.webhookmedia_status) ? 'checked' : ''; %> data-feature="webhookmedia_status" id="webhookmedia_status">
+                                    <label class="custom-control-label" for="webhookmedia_status"><b>Webhook Media</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_4 %>
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.restoresession_status) ? 'checked' : ''; %> data-feature="restoresession_status" id="restoresession_status">
+                                    <label class="custom-control-label" for="restoresession_status"><b>Restore Session</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_6 %>
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.downtimenotif_status) ? 'checked' : ''; %> data-feature="downtimenotif_status" id="downtimenotif_status">
+                                    <label class="custom-control-label" for="downtimenotif_status"><b>Downtime Notifikasi Telegram</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_7 %>
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.autostartdevice_status) ? 'checked' : ''; %> data-feature="autostartdevice_status" id="autostartdevice_status">
+                                    <label class="custom-control-label" for="autostartdevice_status"><b>Auto Start Device</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_8 %>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="tab-pane fade" id="pills-webhook" role="tabpanel">
+                        <form id="save-webhook">
+                            <input type="hidden" name="apiKey" value="<%= device.apiKey %>">
+                            <div class="alert alert-secondary" role="alert">
+                                <%- lingua.manage_device_page.desc_webhook %>
+                             </div>
+                            <h5>URL Webhook & Media</h5>
+                            <div class="form-group">
+                                <input type="text" name="url_webhook" id="url_webhook" value="<%= device.webhook.urlWebhook %>" class="form-control" autocomplete="off">
+                            </div>
+                            <button type="submit" class="btn btn-info"><%= lingua.manage_device_page.button_save_webhook %></button>
+                       </form>
+                       <hr/>
+                        <h5><i class="fas fa-robot"></i> Chatbot</h5>
+                        <div class="table-responsive">
+                            <p><%= lingua.manage_device_page.desc_auto_webhook %></p>    
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td><%= lingua.manage_device_page.column_name %></td>
+                                    <td><%= lingua.manage_device_page.column_desc %></td>
+                                    <td>
+                                        #
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Simsimi</td>
+                                    <td><%= lingua.manage_device_page.rows_desc %></td>
+                                    <td>
+                                        <button type="button" onclick="btnWebhook('simsimi')" class="btn btn-primary"><%= lingua.manage_device_page.button_active %></button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <div class="tab-pane fade" id="pills-telegram" role="tabpanel">
+                        <form id="save-notif">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <input type="hidden" name="apiKey" value="<%= device.apiKey %>">
+                                        <label>ID Telegram</label>
+                                        <input type="text" name="id_telegram" value="<%= device.telegram.idTelegram %>" class="form-control" autocomplete="off">
+                                    </div>
+                                    <div class="alert alert-secondary" role="alert">
+                                        <%= lingua.manage_device_page.desc_telegram %> <a href="https://t.me/whapinotif_bot">@whapinotif_bot</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <h5><%= lingua.manage_device_page.desc_setting_notif %></h5>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="my-select"><%= lingua.manage_device_page.desc_tele_notif %></label>
+                                            <select class="form-control" name="tele_push_connect">
+                                                <option value="true" <%= (device.telegram.tele_push_connect == true) ? 'selected' : ''; %>><%= lingua.manage_device_page.desc_tele_active %></option>
+                                                <option value="false" <%= (device.telegram.tele_push_connect == false) ? 'selected' : ''; %>><%= lingua.manage_device_page.desc_tele_inactive %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="my-select"><%= lingua.manage_device_page.desc_tele_notif1 %></label>
+                                            <select class="form-control" name="tele_push_changestate">
+                                                <option value="true" <%= (device.telegram.tele_push_changestate == true) ? 'selected' : ''; %>><%= lingua.manage_device_page.desc_tele_active %></option>
+                                                <option value="false" <%= (device.telegram.tele_push_changestate == false) ? 'selected' : ''; %>><%= lingua.manage_device_page.desc_tele_inactive %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label for="my-select"><%= lingua.manage_device_page.desc_tele_notif2 %></label>
+                                            <select class="form-control" name="tele_push_disconnect">
+                                                <option value="true" <%= (device.telegram.tele_push_disconnect == true) ? 'selected' : ''; %>><%= lingua.manage_device_page.desc_tele_active %></option>
+                                                <option value="false" <%= (device.telegram.tele_push_disconnect == false) ? 'selected' : ''; %>><%= lingua.manage_device_page.desc_tele_inactive %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-info"><%= lingua.manage_device_page.button_save %></button>
+                       </form>
+                    </div>
+                    <div class="tab-pane fade" id="pills-grup" role="tabpanel">
+                        <div class="alert alert-secondary" role="alert">
+                            <%= lingua.manage_device_page.desc_filter_group %>
+                        </div>
+                        <button type="button" data-service="getListGroup" class="mb-3 btn btn-success btn-block state" <%= bt_filter %>><%= lingua.manage_device_page.button_filter_group %></button>
+                        <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th><%= lingua.manage_device_page.label_id_group %></th>
+                                    <th><%= lingua.manage_device_page.label_name_group %></th>
+                                </tr>
+                            </thead>
+                            <tbody id="load_list_group"></tbody>
+                        </table>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var constApiKey = '<%= device.apiKey %>'
+    var qrCode = '<%= qrCode %>';
+
+    if (qrCode != '-') {
+        $("#qrCode").attr("src", qrCode).show();
+    }
+
+    $('#save-notif').validate({
+        rules: {
+            id_telegram: {
+                required: true
+            }
+        },
+        messages: {
+            id_telegram: {
+                required: '<%= lingua.manage_device_page.validate_username %>'
+            }
+        },
+        submitHandler: function(form) {
+            $.ajax({
+               type: 'POST',
+               url: '../user/saveTelegram',
+               data: $('#save-notif').serialize(),
+               success: function(e) {
+                loadToast('info', e.results.message)
+               },
+               error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+               }
+            });
+        }
+    })
+
+    $('#save-webhook').validate({
+        submitHandler: function(form) {
+            $.ajax({
+               type: 'POST',
+               url: '../user/saveWebhook',
+               data: $('#save-webhook').serialize(),
+               success: function(e) {
+                loadToast('info', e.results.message)
+               },
+               error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+               }
+            });
+        }
+    })
+
+    $('#send-message').validate({
+        rules: {
+            phone: {
+                required: true,
+                number: true
+            },
+            message: {
+               required: true
+            }
+        },
+        messages: {
+            phone: {
+                required: '<%= lingua.manage_device_page.validate_phone_required %>',
+                number: '<%= lingua.manage_device_page.validate_phone_numeric %>'
+            },
+            message: {
+               required: '<%= lingua.manage_device_page.validate_message_required %>'
+            }
+        },
+        submitHandler: function(form) {
+            $.ajax({
+               type: 'POST',
+               url: '../api/sendMessage',
+               data: $('#send-message').serialize(),
+               success: function(e) {
+                  $('input[name=phone]').val('')
+                  $('textarea[name=message]').val('')
+                  loadToast('info', e.results.message)
+               },
+               error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+               }
+            });
+        }
+    })
+
+    $('#change-apikey').validate({
+        submitHandler: function(form) {
+            $.ajax({
+               type: 'POST',
+               url: '../user/newApiKey',
+               data: $('#change-apikey').serialize(),
+               success: function(e) {
+                    constApiKey = e.results.apiKey
+                    $("#new-apikey").html(e.results.apiKey)
+                    $("#new-apikey2").val(e.results.apiKey)
+                    $("#new-apikey3").val(e.results.apiKey)
+                    loadToast('success', e.results.message)
+                    init(constApiKey)
+               },
+               error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+               }
+            });
+        }
+    })
+
+    $(".featured_whapi").on('change', function() {
+        $.ajax({
+            type: 'POST',
+            url: '../user/settingDeviceSubmit',
+            data: {
+                apiKey: constApiKey,
+                status: $(this).is(':checked'),
+                feature: $(this).attr('data-feature')
+            },
+            success: function(e) {
+                loadToast('info', e.results.message)
+            },
+            error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+            }
+        });
+    });
+
+    function disabledButton(s_start, s_filter_group, s_destroy){
+        $("button[data-service='serviceStart']").prop("disabled", s_start);
+        $("button[data-service='getListGroup']").prop("disabled", s_filter_group);
+        $("button[data-service='serviceDestroy']").prop("disabled", s_destroy);
+    }
+
+    function btnWebhook(params){
+        $.ajax({
+            type: 'POST',
+            url: '../user/autoWebhook',
+            data: {
+                apiKey: constApiKey,
+                feature: params
+            },
+            success: function(e) {
+                if (e.status) {
+                    $('#url_webhook').val(e.url)
+                }
+                loadToast(e.clr, e.message)
+            },
+            error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+            }
+        });
+    }
+
+    function deleteSessionDevice(){
+        var r = confirm("<%= lingua.manage_device_page.desc_delete_confirm_session %>");
+        if (r == true) {
+            $.ajax({
+                url: '../user/deleteSessionDevice',
+                type: 'post',
+                data: "apiKey=" + constApiKey,
+                success: function(e) {
+                    loadToast(e.clr, e.message)
+                },
+                error: function(xhr, status, error) {
+                    loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+                }
+            });
+        }
+    }
+
+    $(".state").click(function() {
+        let data_service = $(this).attr('data-service')
+        $.ajax({
+            type: 'GET',
+            url: '../api/' + data_service,
+            data: {
+                apiKey: constApiKey
+            },
+            success: function(e) {
+                if (data_service == 'getListGroup') {
+                    if (e.code == 200) {
+                        table.clear().draw();
+                        e.results.forEach( data => {
+                            table.row.add([data.id, data.subject]).draw(false)
+                        })
+                    }
+                    else{
+                        loadToast('danger', e.results.message)
+                    }
+                }
+                else{
+                    loadToast('info', e.results.message)
+                }
+            },
+            error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+            }
+        });
+   });
+    
+   function init(constApiKey){
+        var socket = io();
+        
+        socket.on(constApiKey + '_qrcode', function(msg) {
+            $("img#qrCode").attr("src", msg).show();
+        });
+        
+        socket.on(constApiKey + '_err_msg', function(err) {
+            loadToast('danger', err)
+        });
+        
+        socket.on(constApiKey + '_event_change_state', function(state) {
+            if (state == 'CONNECTED') {
+                $("#state").removeClass();
+                $("#state").addClass('badge badge-success');
+                disabledButton(true, false, false);
+            } else if (state == 'PAIRING') {
+                $("#state").removeClass();
+                $("#state").addClass('badge badge-info');
+                disabledButton(true, true, false);
+            } else if (state == 'SERVICE_OFF') {
+                $("#state").removeClass();
+                $("#state").addClass('badge badge-secondary');
+                disabledButton(false, true, true);
+            } else if(state == 'SERVICE_SCAN'){
+                $("#state").removeClass();
+                $("#state").addClass('badge badge-secondary');
+                disabledButton(true, true, false);
+            }
+            if (state == 'SERVICE_OFF' || 'CONNECTED'){
+                $("img#qrCode").attr("src", '../img/loading.gif');
+            }
+            if (state == null) {
+                $("#state").addClass('badge badge-secondary');
+                state = 'SERVICE_OFF';
+                disabledButton(true, true, false);
+            }
+            $("#state").html(state);
+        });
+
+   }
+
+    $(function() {
+        init(constApiKey)
+        table = $('#example').DataTable({
+            "aLengthMenu": [[10, 15, 20, 25, 30], [10, 15, 20, 25, 30]],
+            "iDisplayLength": 10,
+        });
+    })
+
+</script>

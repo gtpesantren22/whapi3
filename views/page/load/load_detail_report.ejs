@@ -1,0 +1,51 @@
+<%
+    if (report.status == 0) {
+        status_msg = '<span class="badge badge-warning"><i class="far fa-clock"></i> ' + lingua.log_device_backend.desc_pending + ' </span>'
+    }
+    else if (report.status == 1){
+        status_msg = '<span class="badge badge-info"><i class="fas fa-check"></i> ' + lingua.log_device_backend.desc_delivered + ' </span>'
+    }
+    else if (report.status == 2){
+        status_msg = '<span class="badge badge-primary"><i class="fas fa-check-double"></i> ' + lingua.log_device_backend.desc_received + ' </span>'
+    }
+    else if (report.status == 3){
+        status_msg = '<span class="badge badge-success"><i class="fas fa-check-circle"></i> <i class="fas fa-check-double"></i> ' + lingua.log_device_backend.desc_read + ' </span>'
+    }
+    else{
+        status_msg = '<span class="badge badge-success"><i class="fas fa-check-circle"></i> <i class="fas fa-check-double"></i> ' + lingua.log_device_backend.desc_read + ' </span>'
+    }
+%>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td><b><%= report.id_message %></b></td>
+        </tr>
+        <tr>
+            <td><%= lingua.log_api_page.desc_detail_time %></td>
+            <td>:</td>
+            <td><b><%= date.created %></b></td>
+        </tr>
+        <tr>
+            <td><%= lingua.log_api_page.desc_function_api %></td>
+            <td>:</td>
+            <td><b><%= report.method %></b></td>
+        </tr>
+        <tr>
+            <td><%= lingua.log_api_page.desc_detail_received %></td>
+            <td>:</td>
+            <td><b><%= report.phone %></b></td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>:</td>
+            <td><b><%- status_msg %></b></td>
+        </tr>
+        <tr>
+            <td>Data</td>
+            <td>:</td>
+            <td><%= JSON.stringify(report.rawdata) %></td>
+        </tr>
+    </table>
+</div>
