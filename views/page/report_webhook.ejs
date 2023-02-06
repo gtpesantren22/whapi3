@@ -2,8 +2,8 @@
     <div class="col-md-3 mb-3">
        <div class="card user-card">
             <div class="card-body">
-                <h5><i class="fal fa-file-chart-line"></i> <%= lingua.log_api_page.title %></h5>
-                <form id="report-api-form">
+                <h5><i class="fad fa-link"></i> <%= lingua.log_webhook_page.title_system %></h5>
+                <form id="report-device-form">
                     <div class="form-group">
                         <label><%= lingua.log_api_page.desc_choose_device %></label>
                         <select class="form-control" name="apiKey">
@@ -19,24 +19,6 @@
                             %>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select class="form-control" name="status">
-                            <option value="-1">- <%= lingua.log_api_page.desc_status %> -</option>
-                            <option value="1"><%= lingua.log_device_backend.desc_pending %></option>
-                            <option value="2"><%= lingua.log_device_backend.desc_delivered %> ✔</option>
-                            <option value="3"><%= lingua.log_device_backend.desc_received %> ✔✔</option>
-                            <option value="4"><%= lingua.log_device_backend.desc_read %></option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Tipe</label>
-                        <select class="form-control" name="type">
-                            <option value="-1">- <%= lingua.log_api_page.desc_type %> -</option>
-                            <option value="private">Private</option>
-                            <option value="group">Group</option>
-                        </select>
-                    </div>
                     <input type="submit" class="btn btn-primary" value="<%= lingua.log_api_page.button_apply %>"/>
                 </form>
             </div> 
@@ -44,7 +26,7 @@
     </div>
     <div class="col-md-9">
         <div class="card user-card">
-             <div class="card-body" id="load_report">
+             <div class="card-body" id="load_device_report">
                 <%= lingua.log_device_backend.desc_load_report %>
              </div> 
          </div>
@@ -53,7 +35,7 @@
 
 <script>
     $(document).ready( function () {
-        $('#report-api-form').validate({
+        $('#report-device-form').validate({
             rules: {
                 apiKey: {
                     required: true
@@ -67,10 +49,10 @@
             submitHandler: function(form) {
             $.ajax({
                 type: 'POST',
-                url: '../user/loadReport',
-                data: $('#report-api-form').serialize(),
+                url: '../user/loadReportWebhook',
+                data: $('#report-device-form').serialize(),
                 success: function(e) {
-                    $('#load_report').html(e)
+                    $('#load_device_report').html(e)
                     loadToast('success', "<%= lingua.log_api_page.desc_load_report %>");
                 },
                 error: function(xhr, status, error) {

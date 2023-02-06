@@ -19,12 +19,12 @@
                     <tr>
                         <td><%= lingua.auth_page.desc_table_1 %></td>
                         <td><%= lingua.auth_page.desc_table_1_1 %></td>
-                        <td><%- app.isServerMessage %></td>
+                        <td><%- (app.isServerMessage ? app.isServerMessage : '<i style="color:red" class="fa fa-times-circle"></i> Not ready') %></td>
                     </tr>
                     <tr>
                         <td><%= lingua.auth_page.desc_table_2_1 %></td>
                         <td><%= lingua.auth_page.desc_table_2_2 %> <a href="install"><%= lingua.auth_page.desc_table_2_2_link %></a>.</td>
-                        <td><%- app.isLicenseMessage %></td>
+                        <td><%- (app.isLicenseMessage ? app.isLicenseMessage : '<i style="color:red" class="fa fa-times-circle"></i> Not ready') %></td>
                     </tr>
                     <tr>
                         <td><%= lingua.auth_page.desc_table_3_1 %></td>
@@ -35,7 +35,7 @@
                                     expired_date = '<i style="color:blue" class="fa fa-info-circle"></i> Expired : ' + data
                                 }
                                 else{
-                                    expired_date = '<i style="color:red" class="fa fa-times-circle"></i> ' + lingua.auth_page.desc_license_not_install + 'asd'
+                                    expired_date = '<i style="color:red" class="fa fa-times-circle"></i> ' + lingua.auth_page.desc_license_not_install
                                 }
                             %>
                             <%- expired_date %>

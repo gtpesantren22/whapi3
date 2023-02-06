@@ -29,48 +29,95 @@
             </div>
         </div>
     </div>
+    <div class="col-12">
+      <div class="card user-card">
+        <div class="card-body">
+          <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Device</th>
+                    <th>Status Koneksi</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 </div>
-<div class="row" id="load_device"></div>
 
 <script>
+  
+    $(document).ready( function () {
 
-    loadDevice()
-
-    $('#add-device').validate({
-      rules: {
-        name: {
-          required: true
-        }
-      },
-      messages: {
-        name: {
-          required: '<%= lingua.device_page.validate_name %>'
-        }
-      },
-      submitHandler: function(form) {
-        $.ajax({
-            type: 'POST',
-            url: '../user/addDevice',
-            data: $('#add-device').serialize(),
-            success: function(e) {
-              loadDevice()
-              $('#name').val('');
-              $('#apiKey').val('');
-              loadToast(e.clr, e.message)
+      var table = $('#example').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "order":[],
+        "ajax":{
+            url: '../user/listDeviceDt'
+        },
+        'columns':[
+            { 'data': 'name_device' },
+            { 'data': 'status_label' },
+            { 'data': 'action' }
+        ],
+        "columnDefs":[{
+                "targets":[0, 1],
+                "orderable":false,
             },
-            error: function(xhr, status, error) {
-              loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
-            }
-        });
-      }
+        ],
+        "aLengthMenu": [[10, 15, 20, 25, 30], [10, 15, 20, 25, 30]],
+        "iDisplayLength": 10,
     });
 
-    function loadDevice(){
-      $.get('../user/listDevice', (e) => {
-        $('#load_device').html(e)
-      }).fail(function() {
-        loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
-      })
-    }
-  
+      deleteConfirm = function(id){
+          var r = confirm("<%= lingua.device_page.confirm_delete %>");
+          if (r == true) {
+              $.ajax({
+                  url: '../user/deleteDevice',
+                  type: 'post',
+                  data: "_id=" + id,
+                  success: function(e) {
+                      table.ajax.reload();
+                      loadToast('info', e.message)
+                  },
+                  error: function(xhr, status, error) {
+                      loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+                  }
+              });
+          }
+      }
+
+      $('#add-device').validate({
+        rules: {
+          name: {
+            required: true
+          }
+        },
+        messages: {
+          name: {
+            required: '<%= lingua.device_page.validate_name %>'
+          }
+        },
+        submitHandler: function(form) {
+          $.ajax({
+              type: 'POST',
+              url: '../user/addDevice',
+              data: $('#add-device').serialize(),
+              success: function(e) {
+                $('#name').val('')
+                $('#apiKey').val('')
+                table.ajax.reload()
+                loadToast(e.clr, e.message)
+              },
+              error: function(xhr, status, error) {
+                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText)
+              }
+          });
+        }
+      });
+    })
+
   </script>
