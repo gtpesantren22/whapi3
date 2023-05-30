@@ -21,7 +21,7 @@
         "buy_desc": "Ainda não possui uma licença?",
         "buy_link": "Compre aqui",
         "install_button": "Instalar",
-        "login_button": "Login",
+        "homepage_button": "Pagina inicial",
         "license_required": "Licença é obrigatória"
     },
     "auth_page": {
@@ -137,6 +137,7 @@
         "desc_device1": "Gerenciar dispositivos",
         "desc_device2": "Registro do dispositivo",
         "desc_device3": "Registro do dispositivo da API",
+        "desc_device4": "Relatório de webhooks",
         "desc_utility": "Utilitário",
         "desc_utility1": "Resposta Automática",
         "desc_utility2": "Arquivos de Mídia",
@@ -187,6 +188,9 @@
         "validate_name": "Nome do dispositivo é obrigatório",
         "button_manage": "Gerenciar",
         "button_delete": "Deletar",
+        "column_device": "Dispositivo",
+        "column_state": "Status",
+        "column_action": "Ação",
         "device_404": "Dispositivo não encontrado, crie um novo dispositivo.",
         "confirm_delete": "Tem certeza de que deseja excluir este dispositivo?, os dados serão excluídos e esta ação não pode ser cancelada."
     },
@@ -214,6 +218,7 @@
         "desc_feature_6": "Restaure a sessão do dispositivo, para que você não precise verificar novamente quando o aplicativo for reiniciado.",
         "desc_feature_7": "Quando seu dispositivo e WHAPI não estiverem conectados, você receberá uma notificação via Telegram.",
         "desc_feature_8": "Quando o aplicativo for executado pela primeira vez, o dispositivo iniciará automaticamente.",
+        "desc_feature_9": "Notificações do story que foram codificadas em base64.",
         "desc_webhook": "Você pode usar o <b>https://webhook.site/</b> para obter respostas de webhook.",
         "button_save_webhook": "Salvar",
         "desc_auto_webhook": "O webhook abaixo funciona para transformar seu WhatsApp em um chatbot instantaneamente!",
@@ -236,7 +241,13 @@
         "desc_filter_group": "Obtenha o ID do Grupo no seu whatsapp, clique no botão abaixo.",
         "label_id_group": "ID do grupo",
         "label_name_group": "Nome do grupo",
-        "button_filter_group": "Grupo de filtros"
+        "button_filter_group": "Grupo de filtros",
+        "title_clear_chat": "Excluir mensagens e conversas",
+        "title_clear_chat_desc": "Excluir chats e lista de mensagens carregados na RAM, quando você acessar a API <b>fetchMessageById</b>, <b>getChats</b>, <b>getChatById</b> estarão vazios. Isso pode reduzir o desempenho da RAM",
+        "title_clear_chat_button": "Limpar",
+        "title_clear_chat_confirm": "Tem certeza?, esta ação não pode ser desfeita",
+        "title_clear_chat_yes": "Dados apagados com sucesso.",
+        "title_clear_chat_no": "Falha ao excluir dados, verifique se o status do dispositivo é CONNECTED"
     },
     "device_backend":{
         "desc_delete_device": "Dispositivo excluído com sucesso",
@@ -394,7 +405,23 @@
         "button_uninstall": "Desinstalar Licença",
         "confirm_uninstall": "Tem certeza?, Os dados de log do sistema e outros dados serão perdidos, esta ação não pode ser desfeita",
         "validate_auth_ngrok": "O token de autenticação é obrigatório",
-        "validate_min_length": "Auth Token Ngrok com pelo menos 20 caracteres"
+        "validate_min_length": "Auth Token Ngrok com pelo menos 20 caracteres",
+        "title_webhook_err": "Logs de erro do webhook",
+        "desc_webhook_err": "Quando o aplicativo falha ao enviar um webhook, ele é registrado.",
+        "title_storechat": "Desative o salvamento de listas de mensagens e chats",
+        "desc_storechat": "Quando você desativa esse recurso, os bate-papos recebidos não são salvos. As APIs <b>fetchMessageById, getChats, getChatById</b> não serão atualizadas para novas mensagens.",
+        "title_restartapp": "Reiniciar aplicativo",
+        "title_restartapp_desc": "Ao reiniciar o aplicativo, verifique console/cmd/terminal.",
+        "title_restartapp_button": "Reinicie agora"
+    },
+    "security_page":{
+        "title_system": "Configurações de segurança",
+        "title_customhomepage": "Páginas iniciais personalizadas",
+        "desc_customhomepage": "Você pode alterar a página inicial facilmente, altere o arquivo <b>views/custom_homepage.ejs</b>. Certifique-se de entender html e css",
+        "title_routeslogin": "Links de login",
+        "desc_routeslogin": "Link de login personalizado para proteger o aplicativo",
+        "button_routeslogin": "Atualizações",
+        "validate_routeslogin": "O caminho de login é obrigatório"
     },
     "settings_backend":{
         "desc_ngrok": "O serviço Ngrok foi ativado com sucesso.",
@@ -405,8 +432,7 @@
     "changelog_page":{
         "title_system": "Registro de alterações",
         "title": "Registro de alterações",
-        "desc_changelog": "Para atualizar e manter o WHAPI, leia o guia",
-        "desc_detail_log": "Detalhes do registro"
+        "desc": "Para um changelog completo, por favor, junte-se ao nosso canal de telegrama privado. Entre em contato conosco <a href=\"https://t.me/doveriz\" target=\"blank\">aqui</a>. Ao entrar em contato conosco, forneça a licença que você possui."
     },
     "detail_account_page":{
         "title_system": "Informação da conta",
@@ -453,6 +479,7 @@
         "desc_location_group": "Localização enviada com sucesso para o grupo",
         "desc_location": "Localização enviada com sucesso para",
         "desc_send_message": "Mensagem enviada com sucesso para",
+        "desc_send_adreply_message": "Mensagem adReply enviada com sucesso para",
         "desc_send_button_message": "Botão de mensagem enviado com sucesso para",
         "desc_send_button_message_group": "Sucesso no botão de mensagem enviado para o grupo",
         "desc_send_template_message": "Modelo de mensagem enviado com sucesso para",

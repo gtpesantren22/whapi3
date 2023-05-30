@@ -21,7 +21,7 @@
         "buy_desc": "Belum punya license ?",
         "buy_link": "beli disini",
         "install_button": "Install",
-        "login_button": "Login",
+        "homepage_button": "Beranda",
         "license_required": "License wajib diisi"
     },
     "auth_page": {
@@ -137,6 +137,7 @@
         "desc_device1": "Kelola perangkat",
         "desc_device2": "Log perangkat",
         "desc_device3": "Log perangkat API",
+        "desc_device4": "Log Webhook",
         "desc_utility": "Utilitas",
         "desc_utility1": "Auto Reply",
         "desc_utility2": "File Media",
@@ -187,6 +188,9 @@
         "validate_name": "Nama perangkat wajib diisi",
         "button_manage": "Kelola",
         "button_delete": "Hapus",
+        "column_device": "Perangkat",
+        "column_state": "Status",
+        "column_action": "Aksi",
         "device_404": "Perangkat tidak ditemukan, silahkan membuat perangkat baru.",
         "confirm_delete": "Apakah Anda yakin ingin menghapus perangkat ini ?, data yang berkaitan dengan perangkat ini akan dihapus. Dan tindakan ini tidak bisa dibatalkan."
     },
@@ -214,6 +218,7 @@
         "desc_feature_6": "Merestore sesi perangkat agar Anda tidak perlu scan ulang ketika aplikasi direstart ulang.",
         "desc_feature_7": "Ketika perangkat Anda dan whapi tidak terhubung, Anda akan mendapatkan notifikasi via telegram.",
         "desc_feature_8": "Saat aplikasi pertama kali berjalan, perangkat akan memulai secara otomatis.",
+        "desc_feature_9": "Notifikasi story yang sudah di base64 encode.",
         "desc_webhook": "Anda dapat menggunakan situs <b>https://webhook.site/</b> untuk mendapatkan response webhook.",
         "button_save_webhook": "Simpan",
         "desc_auto_webhook": "Webhook dibawah berfungsi untuk merubah whatsapp Anda menjadi chatbot dengan instan!",
@@ -236,7 +241,13 @@
         "desc_filter_group": "Dapatkan ID Grup pada whatsapp Anda, klik tombol dibawah ini.",
         "label_id_group": "ID Grup",
         "label_name_group": "Nama Grup",
-        "button_filter_group": "Filter Grup"
+        "button_filter_group": "Filter Grup",
+        "title_clear_chat": "Hapus pesan dan percakapan",
+        "title_clear_chat_desc": "Menghapus obrolan dan daftar pesan yang dimuat di RAM, saat Anda mengakses API <b>fetchMessageById</b>, <b>getChats</b>, <b>getChatById</b> akan kosong. Hal ini dapat menurunkan kinerja RAM",
+        "title_clear_chat_button": "Hapus",
+        "title_clear_chat_confirm": "Apakah Anda yakin?, tindakan ini tidak bisa dibatalkan",
+        "title_clear_chat_yes": "Berhasil menghapus data.",
+        "title_clear_chat_no": "Gagal menghapus data, pastikan status perangkat CONNECTED"
     },
     "device_backend":{
         "desc_delete_device": "Device berhasil dihapus",
@@ -394,7 +405,23 @@
         "button_uninstall": "Uninstall Lisensi",
         "confirm_uninstall": "Apakah Anda yakin ?, Data log sistem, dan data lainnya akan hilang, tindakan ini tidak bisa dibatalkan",
         "validate_auth_ngrok": "Auth token wajib diisi",
-        "validate_min_length": "Auth Token Ngrok minimal 20 karakter"
+        "validate_min_length": "Auth Token Ngrok minimal 20 karakter",
+        "title_webhook_err": "Log webhook error",
+        "desc_webhook_err": "Mencatat pesan error ketika webhook gagal dikirim.",
+        "title_storechat": "Matikan fitur simpan chat & list pesan",
+        "desc_storechat": "Ketika Anda mematikan fitur ini, pesan masuk whatsapp tidak akan disimpan. API <b>fetchMessageById, getChats, getChatById</b> tidak akan mendapatkan mendapatkan pesan terbaru.",
+        "title_restartapp": "Restart Aplikasi",
+        "title_restartapp_desc": "ketika Anda restart aplikasi, silahkan cek console/cmd/terminal.",
+        "title_restartapp_button": "Restart Sekarang"
+    },
+    "security_page":{
+        "title_system": "Setting keamanan",
+        "title_customhomepage": "Custom Homepage",
+        "desc_customhomepage": "Anda dapat mengubah homepage dengan mudah, silahkan ubah file <b>views/custom_homepage.ejs</b>. Pastikan Anda memahami html & css",
+        "title_routeslogin": "Link Login",
+        "desc_routeslogin": "Custom link login untuk mengamankan aplikasi",
+        "button_routeslogin": "Ubah",
+        "validate_routeslogin": "Path login wajib diisi"
     },
     "settings_backend":{
         "desc_ngrok": "Layanan Ngrok berhasil diaktifkan.",
@@ -405,8 +432,7 @@
     "changelog_page":{
         "title_system": "Changelog",
         "title": "Changelog",
-        "desc_changelog": "Untuk mengupdate dan maintenance whapi silahkan baca panduan",
-        "desc_detail_log": "Detail Log"
+        "desc": "Untuk changelog lengkap, silahkan Anda bergabung di channel private telegram kami. Silahkan hubungi kami <a href=\"https://t.me/doveriz\" target=\"blank\">disini</a>. Ketika menghubungi kami, silahkan informasikan license yang Anda miliki."
     },
     "detail_account_page":{
         "title_system": "Informasi Akun",
@@ -453,6 +479,7 @@
         "desc_location_group": "Lokasi berhasil dikirim ke grup",
         "desc_location": "Lokasi berhasil dikirim ke",
         "desc_send_message": "Pesan berhasil dikirim ke",
+        "desc_send_adreply_message": "Pesan adReply berhasil dikirim ke",
         "desc_send_button_message": "Pesan button berhasil dikirim ke",
         "desc_send_button_message_group": "Pesan button berhasil dikirim ke grup",
         "desc_send_template_message": "Pesan template berhasil dikirim ke",

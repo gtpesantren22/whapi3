@@ -21,7 +21,7 @@
         "buy_desc": "Don't have a license yet?",
         "buy_link": "Buy here",
         "install_button": "Install",
-        "login_button": "Login",
+        "homepage_button": "Homepage",
         "license_required": "License is required"
     },
     "auth_page": {
@@ -137,6 +137,7 @@
         "desc_device1": "Manage device",
         "desc_device2": "Device log",
         "desc_device3": "Device log API",
+        "desc_device4": "Webhooks Report",
         "desc_utility": "Utility",
         "desc_utility1": "Auto reply",
         "desc_utility2": "Media files",
@@ -187,6 +188,9 @@
         "validate_name": "Device name is required",
         "button_manage": "Manage",
         "button_delete": "Delete",
+        "column_device": "Device",
+        "column_state": "Status",
+        "column_action": "Action",
         "device_404": "Device not found, please create new device.",
         "confirm_delete": "Are you sure you want to delete this device?, the data will be deleted. And this action cannot be cancel."
     },
@@ -214,6 +218,7 @@
         "desc_feature_6": "Restore the device session, so you don't have to re-scan when the app is restarted.",
         "desc_feature_7": "When your device and WHAPI is not connected, you will get notification via telegram.",
         "desc_feature_8": "When the app is running for the first time, device will start up automatically.",
+        "desc_feature_9": "Notification of stories that have been base64 encoded.",
         "desc_webhook": "You can use the <b>https://webhook.site/</b> site to get webhook responses.",
         "button_save_webhook": "Save",
         "desc_auto_webhook": "The webhook below works to turn your WhatsApp into a chatbot instantly!",
@@ -236,7 +241,13 @@
         "desc_filter_group": "Get Group ID on your whatsapp, click the button below.",
         "label_id_group": "Group ID",
         "label_name_group": "Group Name",
-        "button_filter_group": "Filter Group"
+        "button_filter_group": "Filter Group",
+        "title_clear_chat": "Delete messages and conversation",
+        "title_clear_chat_desc": "Clears chat and message list loaded in RAM, when you access the API <b>fetchMessageById</b>, <b>getChats</b>, <b>getChatById</b> will be empty. This can reduce RAM performance",
+        "title_clear_chat_button": "Delete",
+        "title_clear_chat_confirm": "Are you sure?, this action can't be undone",
+        "title_clear_chat_yes": "Successfully cleared data.",
+        "title_clear_chat_no": "Failed to clear data, make sure device status is CONNECTED"
     },
     "device_backend":{
         "desc_delete_device": "Device deleted successfully",
@@ -394,7 +405,23 @@
         "button_uninstall": "Uninstall license",
         "confirm_uninstall": "Are you sure?, System log data and other data will be lost, this action cannot be undone",
         "validate_auth_ngrok": "Auth token is required",
-        "validate_min_length": "Auth Token Ngrok at least 20 character"
+        "validate_min_length": "Auth Token Ngrok at least 20 character",
+        "title_webhook_err": "Webhook error logs",
+        "desc_webhook_err": "When app fails to send a webhook, it is logged.",
+        "title_storechat": "Turn off saving message lists and chats",
+        "desc_storechat": "When you turn off this feature, incoming chats will not be saved. The <b>fetchMessageById, getChats, getChatById</b> APIs will not be updated for new messages.",
+        "title_restartapp": "Restart App",
+        "title_restartapp_desc": "When you restart the app, please check the console/cmd/terminal.",
+        "title_restartapp_button": "Restart Now"
+    },
+    "security_page":{
+        "title_system": "Security settings",
+        "title_customhomepage": "Custom Homepage",
+        "desc_customhomepage": "You can change app homepage easily, please change the <b>views/custom_homepage.ejs</b> file. Make sure you understand html & css.",
+        "title_routeslogin": "Login Links",
+        "desc_routeslogin": "Custom login link to secure the app.",
+        "button_routeslogin": "Update",
+        "validate_routeslogin": "Path login required"
     },
     "settings_backend":{
         "desc_ngrok": "Ngrok service has been successfully activated.",
@@ -405,8 +432,7 @@
     "changelog_page":{
         "title_system": "Changelog",
         "title": "Changelog",
-        "desc_changelog": "To update and maintain WHAPI please read the guide",
-        "desc_detail_log": "Log details"
+        "desc": "For a complete changelog, please join our private telegram channel. Please contact us <a href=\"https://t.me/doveriz\" target=\"blank\">here</a>. When contacting us, please provide the license you have."
     },
     "detail_account_page":{
         "title_system": "Account information",
@@ -453,6 +479,7 @@
         "desc_location_group": "Location success sent to group",
         "desc_location": "Location success sent to",
         "desc_send_message": "Message success sent to",
+        "desc_send_adreply_message": "Message adReply success sent to",
         "desc_send_button_message": "Message button success sent to",
         "desc_send_button_message_group": "Message button success sent to group",
         "desc_send_template_message": "Message template success sent to",

@@ -40,14 +40,6 @@
                                     <%= si.distro %>
                                 </td>
                             </tr>
-                            <tr class="bg-secondary text-white">
-                                <td><b>Mac Address</b></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <%= macaddress %>
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
@@ -67,6 +59,20 @@
                                 <label class="custom-control-label" for="set_log_device"><b><%= lingua.settings_page.desc_title_device %></b></label>
                             </div>
                             <%= lingua.settings_page.desc_device %>
+                        </div>
+                        <div class="alert alert-secondary" role="alert">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input featured_whapi_global" <%= (settings.set_log_err_webhook) ? 'checked' : ''; %> data-feature="set_log_err_webhook" id="set_log_err_webhook">
+                                <label class="custom-control-label" for="set_log_err_webhook"><b><%= lingua.settings_page.title_webhook_err %></b></label>
+                            </div>
+                            <%- lingua.settings_page.desc_webhook_err %>
+                        </div>
+                        <div class="alert alert-secondary" role="alert">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input featured_whapi_global" <%= (settings.set_store_chat || settings.set_store_chat  == undefined) ? 'checked' : ''; %> data-feature="set_store_chat" id="set_store_chat">
+                                <label class="custom-control-label" for="set_store_chat"><b><%= lingua.settings_page.title_storechat %></b></label>
+                            </div>
+                            <%- lingua.settings_page.desc_storechat %>
                         </div>
                     </div>
                 </div>
@@ -111,14 +117,21 @@
                     <div class="card-body">
                         <h5><i class="fad fa-sync"></i> <%= lingua.settings_page.desc_refresh %></h5>
                         <p><%= lingua.settings_page.desc_refresh_2 %></p>
-                        <a href="../refreshLicense" class="btn btn-info mb-3"><%= lingua.settings_page.button_refresh %></a>
+                        <a href="../refreshLicense" class="btn btn-info btn-block mb-3"><%= lingua.settings_page.button_refresh %></a>
                     </div>
                 </div>
-                <div class="card user-card">
+                <div class="card user-card mb-3">
                     <div class="card-body">
                         <h5><i class="fad fa-check-circle"></i> <%= lingua.settings_page.desc_uninstall %></h5>
                         <p><%= lingua.settings_page.desc_uninstall_2 %></p>
-                        <a href="#" class="btn btn-danger mb-3" onclick="uninstallLicense(event)"><%= lingua.settings_page.button_uninstall %></a>
+                        <a href="#" class="btn btn-danger btn-block mb-3" onclick="uninstallLicense(event)"><%= lingua.settings_page.button_uninstall %></a>
+                    </div>
+                </div>
+                <div class="card user-card mb-3">
+                    <div class="card-body">
+                        <h5><i class="fad fa-power-off"></i> <%= lingua.settings_page.title_restartapp %></h5>
+                        <p><%= lingua.settings_page.title_restartapp_desc %></p>
+                        <a href="/user/restartApp" class="btn btn-primary btn-block mb-3"><%= lingua.settings_page.title_restartapp_button %></a>
                     </div>
                 </div>
             </div>
@@ -186,7 +199,6 @@
     })
 
     $(".featured_whapi_global").on('change', function() {
-        console.log()
         $.ajax({
             type: 'POST',
             url: '../user/settingAppSubmit',

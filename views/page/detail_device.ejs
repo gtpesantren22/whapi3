@@ -28,9 +28,19 @@
                         bt_1 = 'disabled';
                         bt_4 = '';
                         bt_filter = 'disabled';
-                    } 
+                    }  else if (device.stateStatus == 'PAIRING'){
+                        statusLabel = 'badge badge-info';
+                        bt_1 = 'disabled';
+                        bt_4 = '';
+                        bt_filter = 'disabled';
+                    }
                     else if (device.stateStatus == null){
                         statusLabel = 'badge badge-secondary';
+                    } else {
+                        statusLabel = 'badge badge-secondary';
+                        bt_1 = 'disabled';
+                        bt_4 = '';
+                        bt_filter = 'disabled';
                     }
                 %>
                 <span class="<%= statusLabel %>" id="state"><%= device.stateStatus %></span></span>
@@ -89,12 +99,15 @@
                         <div class="alert alert-info" role="alert">
                             <b><span id="new-apikey"><%= device.apiKey %></span></b>
                         </div>
-                        <form id="change-apikey">
+                        <form id="change-apikey" class="form-group">
                             <input type="hidden" name="_id" value="<%= device._id %>">  
                             <input type="hidden" name="apiKey" id="new-apikey3" value="<%= device.apiKey %>">  
                             <button type="submit" class="btn btn-info"><%= lingua.manage_device_page.desc_change_apikey %></button>
                             <button type="button" id="delete_sess" class="btn btn-danger" onclick="deleteSessionDevice()"><%= lingua.manage_device_page.desc_delete_session %></button>
                         </form>
+                        <h5><%= lingua.manage_device_page.title_clear_chat %></h5>
+                        <p><%- lingua.manage_device_page.title_clear_chat_desc %></p>
+                        <button onclick="clearChat()" class="btn btn-danger"><%= lingua.manage_device_page.title_clear_chat_button %></button>
                     </div>
                     <div class="tab-pane fade" id="pills-fitur" role="tabpanel">
                         <div class="form-group">
@@ -118,6 +131,13 @@
                                     <label class="custom-control-label" for="webhookmedia_status"><b>Webhook Media</b></label>
                                 </div>
                                 <%= lingua.manage_device_page.desc_feature_4 %>
+                            </div>
+                            <div class="alert alert-secondary" role="alert">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input featured_whapi" <%= (device.settings.webhookstories_status) ? 'checked' : ''; %> data-feature="webhookstories_status" id="webhookstories_status">
+                                    <label class="custom-control-label" for="webhookstories_status"><b>Webhook Story</b></label>
+                                </div>
+                                <%= lingua.manage_device_page.desc_feature_9 %>
                             </div>
                             <div class="alert alert-secondary" role="alert">
                                 <div class="custom-control custom-switch">
@@ -257,7 +277,7 @@
     $('#save-notif').validate({
         rules: {
             id_telegram: {
-                required: true
+                required: false
             }
         },
         messages: {
@@ -370,6 +390,38 @@
             }
         });
     });
+
+    function clearChat(){
+        var r = confirm("<%= lingua.manage_device_page.title_clear_chat_confirm %>");
+        if (r == true){
+            $.ajax({
+                type: 'POST',
+                url: '../api/clearMessagesStore',
+                data: 'apiKey=' + constApiKey,
+                success: function(e) {
+                    if (e.code == 200) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '../api/clearChatsStore',
+                            data: 'apiKey=' + constApiKey,
+                            success: function(e) {
+                                loadToast('info', "<%= lingua.manage_device_page.title_clear_chat_yes %>")
+                            },
+                            error: function(xhr, status, error) {
+                                loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText + " clearChatsStore")
+                            }
+                        });
+                    }
+                    else {
+                        loadToast('info', "<%= lingua.manage_device_page.title_clear_chat_no %>");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    loadToast('danger', "Ada error : xhr = " + xhr.status + ' | pesan = ' + xhr.statusText + " clearMessagesStore")
+                }
+            });
+        }
+    }
 
     function disabledButton(s_start, s_filter_group, s_destroy){
         $("button[data-service='serviceStart']").prop("disabled", s_start);

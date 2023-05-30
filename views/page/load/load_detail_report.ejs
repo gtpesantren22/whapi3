@@ -1,14 +1,14 @@
 <%
-    if (report.status == 0) {
+    if (report.status == 1) {
         status_msg = '<span class="badge badge-warning"><i class="far fa-clock"></i> ' + lingua.log_device_backend.desc_pending + ' </span>'
     }
-    else if (report.status == 1){
+    else if (report.status == 2){
         status_msg = '<span class="badge badge-info"><i class="fas fa-check"></i> ' + lingua.log_device_backend.desc_delivered + ' </span>'
     }
-    else if (report.status == 2){
+    else if (report.status == 3){
         status_msg = '<span class="badge badge-primary"><i class="fas fa-check-double"></i> ' + lingua.log_device_backend.desc_received + ' </span>'
     }
-    else if (report.status == 3){
+    else if (report.status == 4){
         status_msg = '<span class="badge badge-success"><i class="fas fa-check-circle"></i> <i class="fas fa-check-double"></i> ' + lingua.log_device_backend.desc_read + ' </span>'
     }
     else{

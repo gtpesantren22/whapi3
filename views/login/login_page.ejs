@@ -3,7 +3,7 @@
 			<div class="user_card">
 				<div class="d-flex justify-content-center form_container">
 					<div class="brand_logo_container">
-						<img src="img/logo-only.png" class="brand_logo" alt="Logo">
+						<img src="/img/logo-only.png" class="brand_logo" alt="Logo">
 					</div>
 				</div>
 				<h4 class="mb-3"><i class="fa fa-lock"></i> <%= lingua.login_page.title %></h4>
@@ -12,7 +12,7 @@
 					  <%= message %>
 					</div>
 				<% } %>
-				<form id="login" action="login" method="post">
+				<form id="login" action="<%= global.routes_change?.login || '/login' %>" method="post">
 					<div class="form-group">
 						<input type="text" name="username" class="form-control input_user" autocomplete="off" placeholder="Username">
 					</div>
